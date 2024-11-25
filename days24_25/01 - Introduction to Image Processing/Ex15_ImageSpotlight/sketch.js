@@ -13,7 +13,7 @@ function setup() {
     createCanvas(500, 500);
 
     // create our holder (make it the same size as our source artwork)
-    holder = new p5.Image(artwork.width, artwork.height);
+    holder = createGraphics(artwork.width, artwork.height);
 }
 
 function draw() {

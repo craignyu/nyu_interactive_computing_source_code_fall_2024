@@ -23,7 +23,7 @@ function setup() {
     capture.hide();
 
     // create our holder (make it the same size as our source artwork)
-    holder = new p5.Image(320, 240);
+    holder = createGraphics(320, 240);
 }
 
 function draw() {
