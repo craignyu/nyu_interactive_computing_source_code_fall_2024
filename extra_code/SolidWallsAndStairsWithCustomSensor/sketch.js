@@ -11,6 +11,7 @@ function setup() {
     // construct the A-Frame world
     // this function requires a reference to the ID of the 'a-scene' tag in our HTML document
     world = new AFrameP5.World('VRScene');
+    world.setFlying(false);
 
     // disable WASD navigation
     // we will hack our own WASD navigation in draw
@@ -209,10 +210,22 @@ class Sensor {
         this.userPosition.z = cp.z;
 
         // make sure the camera is ready to go
-        if (world.camera.cameraEl && world.camera.cameraEl.object3D && world.camera.cameraEl.object3D.children.length >= 2) {
+        if (world.camera.cameraEl && world.camera.cameraEl.object3D) {
+
+            // 2024-11-27: dynamically find the camera element (don't just assume it will be the last child)
+            let camera = false;
+            for (let child of world.camera.cameraEl.object3D.children) {
+                if (child.type == 'PerspectiveCamera') {
+                    camera = child;
+                    break;
+                }
+            }
+            if (!camera) {
+                return;
+            }
 
             // cast a ray in front of the user and see what's there
-            this.rayCasterFront.setFromCamera(this.cursorPosition, world.camera.cameraEl.object3D.children[1]);
+            this.rayCasterFront.setFromCamera(this.cursorPosition, camera);
             this.intersectsFront = this.rayCasterFront.intersectObjects(world.threeSceneReference.children, true);
 
             // determine which "solid" items are in front of the user
