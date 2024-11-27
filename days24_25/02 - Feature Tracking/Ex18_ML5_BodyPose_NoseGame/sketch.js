@@ -22,12 +22,23 @@ function setup() {
     createCanvas(640, 480);
 
     // Create the video and hide it
-    capture = createCapture(VIDEO);
-    capture.size(640, 480);
+    pixelDensity(1);
+    capture = createCapture({
+        video: {
+            mandatory: {
+                minWidth: 640,
+                minHeight: 480,
+                maxWidth: 640,
+                maxHeight: 480
+            }
+        },
+        audio: false
+    });
     capture.hide();
 
     // Start detecting poses in the webcam video
     bodyPose.detectStart(capture, gotPoses);
+
     // Get the skeleton connection information
     connections = bodyPose.getSkeleton();
 }
